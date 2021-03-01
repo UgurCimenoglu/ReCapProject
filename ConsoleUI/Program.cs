@@ -13,7 +13,7 @@ namespace ConsoleUI
         public static void Main(string[] args)
         {
 
-            CarManager carManager = new CarManager(new EfCarDal());
+            //CarManager carManager = new CarManager(new EfCarDal());
 
             //UpdateCar(carManager);
 

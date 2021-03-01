@@ -30,11 +30,26 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<ICarService, CarManager>();   //ICarService türünden bir implementasyon istenirse CarManager ver demek.(API katmanı için)
-            services.AddSingleton<ICarDal, EfCarDal>();     //ICarDal türünden bir implemeentasyon gerekirse EfCarDal ver.(API katmanı için)
-            services.AddSingleton<IRentalService, RentalManager>();
-            services.AddSingleton<IRentalDal, EfRentalDal>();
+            //services.AddSingleton<ICarService, CarManager>();   //ICarService türünden bir implementasyon istenirse CarManager ver demek.(API katmanı için)
+            //services.AddSingleton<ICarDal, EfCarDal>();     //ICarDal türünden bir implemeentasyon gerekirse EfCarDal ver.(API katmanı için)
+
+            //services.AddSingleton<IRentalService, RentalManager>();
+            //services.AddSingleton<IRentalDal, EfRentalDal>();
+
+            //services.AddSingleton<ICustomerService, CustomerManager>();
+            //services.AddSingleton<ICustomerDal, EfCustomerDal>();
+
+            //services.AddSingleton<IUserService, UserManager>();
+            //services.AddSingleton<IUserDal, EfUserDal>();
+
+            //services.AddSingleton<IBrandService, BrandManager>();
+            //services.AddSingleton<IBrandDal, EfBrandDal>();
+
+            //services.AddSingleton<IColorService, ColorManager>();
+            //services.AddSingleton<IColorDal, EfColorDal>();
+
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,4 +1,4 @@
-﻿using Core.Utilities;
+﻿using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.Dto;
 using System;
@@ -13,7 +13,6 @@ namespace Business.Abstract
         IResult Rent(Rental entity);
         IResult Update(Rental entity);
         IResult Delete(Rental entity);
-        IResult FindOneAndUpdate(Rental entity);
         IDataResult<List<RentalDetailDto>> getRentalDetailDtos();
     }
 }

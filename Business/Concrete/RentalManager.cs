@@ -1,7 +1,6 @@
 ﻿using Business.Abstract;
-using Business.Utilities;
 using Business.Validator.FluentValidation;
-using Core.Utilities;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dto;
@@ -46,22 +45,6 @@ namespace Business.Concrete
         {
             _rentalDal.Update(entity);
             return new SuccessResult("Kiralama islemi guncellendi.");
-        }
-
-        public IResult FindOneAndUpdate(Rental entity)
-        {
-
-            var result = _rentalDal.Get(r => r.Id == entity.Id);
-            if (result.RentDate != null)
-            {
-                return new ErrorResult("Teslimat tarihi eklenmiş.");
-            }
-            result.ReturnDate = DateTime.Now;
-            _rentalDal.Update(result);
-            return new SuccessDataResult<Rental>("Teslim Tarihi Eklendi.");
-
-
-
         }
 
         public IDataResult<List<RentalDetailDto>> getRentalDetailDtos()

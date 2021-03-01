@@ -1,12 +1,12 @@
 ﻿using Business.Abstract;
-using Business.Utilities;
-using Business.Validator.FluentValidation;
-using Core.Utilities;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.Validator.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -19,19 +19,13 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand entity)
         {
-            if (ValidatorService.Validator(new BrandValidator(), entity))
-            {
-                _brandDal.Add(entity);
-                return new SuccessResult("Marka Eklendi.");
-            }
-            else
-            {
-                Console.WriteLine("Marka Eklenemedi...");
-                return new ErrorResult("Hata!");
 
-            }
+            _brandDal.Add(entity);
+            return new SuccessResult("Marka Eklendi.");
+
         }
 
         public IResult Delete(Brand entity)

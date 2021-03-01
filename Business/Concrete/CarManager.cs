@@ -1,7 +1,8 @@
 ﻿using Business.Abstract;
-using Business.Utilities;
 using Business.Validator.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dto;
@@ -21,20 +22,11 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car Entity)
         {
-
-            if (ValidatorService.Validator(new CarValidator(), Entity))
-            {
-                _carDal.Add(Entity);
-                return new SuccessResult("Ürün Eklendi.");
-            }
-            else
-            {
-                Console.WriteLine("Eklenemedi!");
-                return new ErrorResult("Ürün Eklenemedi!");
-            }
-
+            _carDal.Add(Entity);
+            return new SuccessResult("Ürün Eklendi.");
         }
 
         public IResult Delete(Car Entity)
