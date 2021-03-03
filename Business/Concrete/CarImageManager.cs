@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Business;
 using Core.Utilities.Helpers;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -14,6 +16,7 @@ namespace Business.Concrete
     class CarImageManager : ICarImageService
     {
         ICarImageDal _carImageDal;
+        private readonly string defaultImage = Environment.CurrentDirectory + @"\wwwroot\Images\default.jpg";
 
         public CarImageManager(ICarImageDal carImageDal)
         {
@@ -23,7 +26,8 @@ namespace Business.Concrete
         public IResult Add(IFormFile file, CarImage entity)
         {
             string ImagePath = FileHelper.Add(file);
-            if (ImagePath != null)
+            var result = BusinessRules.Run(CheckIfCarImagesLimitExceded(entity.CarId));
+            if (ImagePath != null && result.Success)
             {
                 entity.Date = DateTime.Now;
                 entity.ImagePath = ImagePath;
@@ -54,7 +58,11 @@ namespace Business.Concrete
         public IDataResult<List<CarImage>> GetAll()
         {
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(), "Resimler Listelendi.");
+        }
 
+        public IDataResult<List<CarImage>> GetAllByCarId(int carId)
+        {
+            return new SuccessDataResult<List<CarImage>>(CheckIfCarImageNull(carId), "Arabaya göre resimler gösterildi.");
         }
 
         public IResult Update(IFormFile file, CarImage entity)
@@ -71,6 +79,36 @@ namespace Business.Concrete
 
             }
             return new ErrorResult();
+        }
+
+
+        //Business Rules
+        private IResult CheckIfCarImagesLimitExceded(int carId)
+        {
+            var result = _carImageDal.GetAll(c => c.CarId == carId).Count;
+            if (result>5)
+            {
+                return new ErrorResult("Maksimum Resim Sınıfırna Ulaştı!");
+            }
+            return new SuccessResult();
+        }
+
+        private List<CarImage> CheckIfCarImageNull(int carId)
+        {
+            var result = _carImageDal.GetAll(i => i.CarId == carId).Any();
+            if (!result)
+            {
+                return new List<CarImage>
+                {
+                    new CarImage
+                    {
+                        CarId = carId,
+                        Date= DateTime.Now,
+                        ImagePath = defaultImage
+                    }
+                };
+            }
+            return _carImageDal.GetAll(i => i.CarId == carId);
         }
     }
 }

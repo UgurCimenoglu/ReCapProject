@@ -42,6 +42,34 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getallbycarid")]
+        public IActionResult GetAllByCarId([FromForm] int carId)
+        {
+            var result = _carImageService.GetAllByCarId(carId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        //ÖNEMMMLİİİİİİİİİİİİİ
+        //Microsoft.AspNetCore.Http ekledikten sonra postman'da int türünden parametre kabul etmiyor
+        //ya int'in önüne [FromForm] koyacagız ya da nesne yollayacagız. Şunlar gibi = 
+        // ([FromForm] int id) veya (CarImage carImage) eger fromform yaparsak postmanda form-data kısmından
+        //deger yolamamız gerekiyor. Nesne yollayacaksak raw sekmesinden yollayabiliyoruz.
+        //ÖÖÖNEMLİİİİİİİİİİİ
+        [HttpGet("getbyid")]
+        public IActionResult GetById(CarImage carImage)
+        {
+            var result = _carImageService.Get(carImage.Id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpDelete("delete")]
         public IActionResult Delete(CarImage entity)
         {
