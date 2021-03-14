@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 
 namespace Business.Concrete
 {
@@ -23,8 +25,10 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        [SecuredOperation("product.add,admin")]
+
+        [SecuredOperation("car.add")]
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car Entity)
         {
             _carDal.Add(Entity);
@@ -37,6 +41,7 @@ namespace Business.Concrete
             return new SuccessResult("Silme işlemi başarılı");
         }
 
+        [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
             //if (DateTime.Now.Hour == 02)
@@ -61,10 +66,22 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll().Where(c => c.ColorId == ColorId).ToList());
         }
 
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car Entity)
         {
             _carDal.Update(Entity);
             return new SuccessResult("Ürün Güncellendi.");
+        }
+
+        [TransactionAspect]
+        public IResult TransactionTest(Car Entity)
+        {
+            if (Equals(Entity.Description!=null))
+            {
+                _carDal.Add(Entity);
+            }
+
+            return null;
         }
     }
 }
