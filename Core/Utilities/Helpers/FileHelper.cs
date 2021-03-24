@@ -10,8 +10,10 @@ namespace Core.Utilities.Helpers
 {
     public class FileHelper
     {
+        static string uploadPath = Environment.CurrentDirectory + @"\wwwroot\images\";
         public static string Add(IFormFile file)
         {
+
             var sourcepath = Path.GetTempFileName();
 
             if (file.Length > 0)
@@ -21,7 +23,7 @@ namespace Core.Utilities.Helpers
                     file.CopyTo(stream);
                 }
                 var result = newPath(file);
-                File.Move(sourcepath, result);
+                File.Move(sourcepath, uploadPath + result);
                 return result;
             }
             return null;
@@ -71,17 +73,13 @@ namespace Core.Utilities.Helpers
             //Yüklediğimiz resmin uzantısını alıyoruz.(Örneğin .jpeg, .png vs)
             string extension = fileInfo.Extension;
 
-            //Dosya yolunu string şekilde alıyorum.
-            string path = Environment.CurrentDirectory + @"\wwwroot\Images";
-
             //Benzersiz bir string ifade oluşturuyorum.
             var newPath = Guid.NewGuid().ToString() + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + extension;
 
             //String ifadedeki /,: boşluk gib ifadeleri -'ye çeviriyorum.
             string unique = Regex.Replace(newPath, "[/|:| ]", "-");
 
-            var result = $@"{path}\{unique}";
-            return result;
+            return unique;
         }
     }
 }

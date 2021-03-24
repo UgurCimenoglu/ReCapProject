@@ -25,7 +25,9 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddControllers();
+            services.AddCors();
             //services.AddSingleton<ICarService, CarManager>();   //ICarService türünden bir implementasyon istenirse CarManager ver demek.(API katmanı için)
             //services.AddSingleton<ICarDal, EfCarDal>();     //ICarDal türünden bir implemeentasyon gerekirse EfCarDal ver.(API katmanı için)
 
@@ -75,7 +77,11 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
+
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
 
             app.UseRouting();
 

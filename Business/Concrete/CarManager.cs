@@ -10,6 +10,7 @@ using Entities.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
@@ -51,9 +52,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), "Ürünler Listelenid.");
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarDetailDtos()
+        public IDataResult<List<CarDetailDto>> GetCarDetailDtos(Expression<Func<Car, bool>> filter = null)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailDtos(), "Ürünler Listelendi.");
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailDtos(filter), "Ürünler Listelendi.");
         }
 
         public IDataResult<List<Car>> GetCarsByBrandId(int BrandId)

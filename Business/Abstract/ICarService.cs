@@ -3,6 +3,7 @@ using Entities.Concrete;
 using Entities.Dto;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Abstract
@@ -15,6 +16,6 @@ namespace Business.Abstract
         IResult Add(Car Entity);
         IResult Update(Car Entity);
         IResult Delete(Car Entity);
-        IDataResult<List<CarDetailDto>> GetCarDetailDtos();
+        IDataResult<List<CarDetailDto>> GetCarDetailDtos(Expression<Func<Car, bool>> filter = null);
     }
 }

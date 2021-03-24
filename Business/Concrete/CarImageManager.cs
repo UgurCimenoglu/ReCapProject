@@ -27,7 +27,7 @@ namespace Business.Concrete
         {
             string ImagePath = FileHelper.Add(file);
             var result = BusinessRules.Run(CheckIfCarImagesLimitExceded(entity.CarId));
-            if (ImagePath != null && result.Success)
+            if (ImagePath != null && result == null)
             {
                 entity.Date = DateTime.Now;
                 entity.ImagePath = ImagePath;
