@@ -6,7 +6,7 @@ namespace Core.Utilities.Results
 {
     public class DataResult<T> : Result, IDataResult<T>
     {
-        public DataResult(T data, string message, bool success) : base(message, success)
+        public DataResult(T data, string message, bool success) : base(success,message)
         {
             Data = data;
         }

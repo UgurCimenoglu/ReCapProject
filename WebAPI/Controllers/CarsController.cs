@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace WebAPI.Controllers
 {
@@ -130,6 +131,18 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcarsdetailbybrandandcolor")]
+        public IActionResult GetCarsDetailByBrandIdAndColorId(int brandId, int colorId)
+        {
+            var result = _carService.GetCarDetailDtos(c => c.BrandId == brandId && c.ColorId == colorId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
             return BadRequest(result);
         }
     }

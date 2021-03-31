@@ -7,6 +7,7 @@ using Entities.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
@@ -21,13 +22,14 @@ namespace Business.Concrete
 
         public IResult Rent(Rental entity)
         {
-            var result = _rentalDal.GetAll(r => r.CarId == entity.CarId && r.ReturnDate == null);
-            if (result.Count > 0)
+            var result = BusinessRules.Run(checkAvaible(entity));
+            if (result != null)
             {
-                return new ErrorResult("Kiralamak istediğiniz araç şu an aktif olarak başka bir üyemizde kiradadır.");
+                return result;
             }
             _rentalDal.Add(entity);
             return new SuccessResult("Araç Kiralama İslemi Basarili.");
+
         }
 
         public IResult Delete(Rental entity)
@@ -49,7 +51,22 @@ namespace Business.Concrete
 
         public IDataResult<List<RentalDetailDto>> getRentalDetailDtos()
         {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.getRentalDetailDtos(),"Detaylar Listelendi.");
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.getRentalDetailDtos(), "Detaylar Listelendi.");
+        }
+
+
+        /*Busines Rules*/
+
+        public IResult checkAvaible(Rental entity)
+        {
+            var result = _rentalDal.GetAll(r => r.CarId == entity.CarId && (r.ReturnDate == null || r.ReturnDate >= entity.ReturnDate));
+
+            if (result.Count > 0)
+            {
+
+                return new ErrorResult("Kiralamak istediğiniz araç şu an aktif olarak başka bir üyemizde kiradadır.");
+            }
+            return new SuccessResult("Araç Kiralama İslemi Basarili.");
         }
     }
 }
