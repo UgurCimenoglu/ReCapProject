@@ -36,6 +36,7 @@ namespace Business.Concrete
             return new SuccessResult("Ürün Eklendi.");
         }
 
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car Entity)
         {
             _carDal.Delete(Entity);
