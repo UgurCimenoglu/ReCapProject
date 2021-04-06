@@ -27,7 +27,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("car.add")]
+        //[SecuredOperation("car.add")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car Entity)
@@ -67,6 +67,12 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll().Where(c => c.ColorId == ColorId).ToList());
         }
 
+        public IDataResult<List<Car>> GetCarsByCarId(int CarId)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll().Where(c => c.Id == CarId).ToList());
+        }
+
+        [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car Entity)
         {

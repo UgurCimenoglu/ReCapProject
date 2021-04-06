@@ -29,7 +29,7 @@ namespace WebAPI
 
             services.AddControllers().AddNewtonsoftJson();
             services.AddCors();
-           
+
             //services.AddSingleton<ICarService, CarManager>();   //ICarService türünden bir implementasyon istenirse CarManager ver demek.(API katmanı için)
             //services.AddSingleton<ICarDal, EfCarDal>();     //ICarDal türünden bir implemeentasyon gerekirse EfCarDal ver.(API katmanı için)
 
@@ -78,6 +78,8 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.ConfigureCustomExceptionMiddleware();
 
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 

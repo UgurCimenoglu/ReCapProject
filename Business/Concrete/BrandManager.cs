@@ -38,7 +38,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), "Markalar Listelendi.");
         }
-
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand entity)
         {
             _brandDal.Update(entity);

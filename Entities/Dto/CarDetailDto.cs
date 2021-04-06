@@ -15,8 +15,9 @@ namespace Entities.Dto
         public decimal DailyPrice { get; set; }
         public string Description { get; set; }
 
-        public int ImageId { get; set; }
-        public string ImagePath { get; set; }
-        public DateTime Date { get; set; }
+        public string ImagePath { get; set; } = "default.jpg";
+        //public int? ImageId { get; set; }
+
+        //public DateTime? Date { get; set; }
     }
 }

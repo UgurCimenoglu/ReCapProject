@@ -16,7 +16,7 @@ namespace Business.Concrete
     class CarImageManager : ICarImageService
     {
         ICarImageDal _carImageDal;
-        private readonly string defaultImage = Environment.CurrentDirectory + @"\wwwroot\Images\default.jpg";
+        private readonly string defaultImage = "default.jpg";
 
         public CarImageManager(ICarImageDal carImageDal)
         {
@@ -68,7 +68,7 @@ namespace Business.Concrete
         public IResult Update(IFormFile file, CarImage entity)
         {
             var image = this.Get(entity.Id);
-            if (image.Success && file.Length>0)
+            if (image.Success && file.Length > 0)
             {
                 var result = FileHelper.Update(file, image.Data.ImagePath);
                 var ImageEntity = image.Data;
@@ -86,7 +86,7 @@ namespace Business.Concrete
         private IResult CheckIfCarImagesLimitExceded(int carId)
         {
             var result = _carImageDal.GetAll(c => c.CarId == carId).Count;
-            if (result>5)
+            if (result > 5)
             {
                 return new ErrorResult("Maksimum Resim Sınıfırna Ulaştı!");
             }
