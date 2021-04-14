@@ -5,7 +5,9 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Entities.Dto;
 
 namespace Business.Concrete
 {
@@ -35,6 +37,12 @@ namespace Business.Concrete
             return new SuccessDataResult<List<User>>(_userDal.GetAll(), "Kullanicilar Listelendi.");
         }
 
+        public IDataResult<List<UserDetailDto>> GetUserByEmail(string email)
+        {
+            var result = _userDal.GetUserByEmail(email);
+            return new SuccessDataResult<List<UserDetailDto>>(result);
+        }
+
         public User GetByMail(string email)
         {
             var result = _userDal.Get(user => user.Email == email);
@@ -49,7 +57,11 @@ namespace Business.Concrete
 
         public IResult Update(User entity)
         {
-            _userDal.Update(entity);
+            var user = _userDal.Get(u => u.Id == entity.Id);
+            user.Email = entity.Email;
+            user.FirstName = entity.FirstName;
+            user.LastName = entity.LastName;
+            _userDal.Update(user);
             return new SuccessResult("Kullanici Güncellendi.");
         }
     }

@@ -4,6 +4,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Entities.Dto;
 
 namespace Business.Abstract
 {
@@ -15,5 +16,6 @@ namespace Business.Abstract
         IResult Delete(User entity);
         List<OperationClaim> GetClaims(User user);
         User GetByMail(string email);
+        IDataResult<List<UserDetailDto>> GetUserByEmail(string email);
     }
 }

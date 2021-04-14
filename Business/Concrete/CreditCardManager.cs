@@ -20,13 +20,13 @@ namespace Business.Concrete
         public IResult Add(CreditCard entity)
         {
             _creditCardDal.Add(entity);
-            return new SuccessResult("Cart Eklendi.");
+            return new SuccessResult("Card Eklendi.");
         }
 
         public IResult Delete(CreditCard entity)
         {
             _creditCardDal.Delete(entity);
-            return new SuccessResult("Cart Silindi.");
+            return new SuccessResult("Card Silindi.");
         }
 
         public IDataResult<List<CreditCard>> GetAll()
